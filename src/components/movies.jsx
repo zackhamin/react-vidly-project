@@ -4,16 +4,28 @@ import { getMovies } from "../services/fakeMovieService";
 class Movies extends Component {
   state = {
     movies: getMovies(),
+    movieCount: 0,
   };
 
-  handleDelete = movie => {};
+  constructor() {
+    super();
+  }
+  handleDelete = movie => {
+    const movies = this.state.movies.filter(m => m._id !== movie._id);
+    this.setState({ movies });
+  };
+
+  formatCount() {
+    let length = this.state.movieCount;
+    this.setState({ length });
+  }
 
   render() {
+    const { length: count } = this.state.movies;
+    if (count === 0) return <p>No Movies available</p>;
     return (
-      <div id="Parent">
-        <div className="App">
-          <h1>There are some movies in the database</h1>
-        </div>
+      <div id="Parent" style={{ padding: 20 }}>
+        <p>Showing {count} Movies in the database.</p>
 
         <table className="table">
           <thead>
@@ -22,18 +34,24 @@ class Movies extends Component {
               <th>Genre</th>
               <th>Stock</th>
               <th>Rate</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {this.state.movies.map(movie => (
-              <tr>
+              <tr key={movie._id}>
                 <td>{movie.title}</td>
                 <td>{movie.genre.name}</td>
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
-                <button style={{}} className="btn btn-danger">
-                  Delete
-                </button>
+                <td>
+                  <button
+                    onClick={() => this.handleDelete(movie)}
+                    className="btn btn-danger btn-sm"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
