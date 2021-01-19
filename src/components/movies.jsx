@@ -4,21 +4,12 @@ import { getMovies } from "../services/fakeMovieService";
 class Movies extends Component {
   state = {
     movies: getMovies(),
-    movieCount: 0,
   };
 
-  constructor() {
-    super();
-  }
   handleDelete = movie => {
     const movies = this.state.movies.filter(m => m._id !== movie._id);
     this.setState({ movies });
   };
-
-  formatCount() {
-    let length = this.state.movieCount;
-    this.setState({ length });
-  }
 
   render() {
     const { length: count } = this.state.movies;
